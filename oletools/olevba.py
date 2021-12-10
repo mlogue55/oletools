@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-olevba.py - remove this
+olevba.py - remove this thing here
 
 olevba is a script to parse OLE and OpenXML files such as MS Office documents
 (e.g. Word, Excel), to extract VBA Macro code in clear text, deobfuscate
