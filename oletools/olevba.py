@@ -1252,7 +1252,8 @@ def mso_file_extract(data):
     raise a MsoExtractionError if the data cannot be extracted
     """
     # check the magic:
-    assert is_mso_file(data)
+    if not is_mso_file(data):
+        raise AssertionError
 
     # In all the samples seen so far, Word always uses an offset of 0x32,
     # and Excel 0x22A. But we read the offset from the header to be more
@@ -3983,7 +3984,8 @@ class VBA_Parser(object):
                         # We have to remove the " around the strings, then double the remaining ",
                         # and put back the " around:
                         if len(s)>=2:
-                            assert(s[0]=='"' and s[-1]=='"')
+                            if not (s[0]=='"' and s[-1]=='"'):
+                                raise AssertionError
                             s = s[1:-1]
                             s = s.replace('"', '""')
                             s = '"' + s + '"'

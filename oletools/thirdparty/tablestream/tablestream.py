@@ -272,7 +272,8 @@ class TableStream(object):
         self.header_row = header_row
         self.encoding_in = encoding_in
         self.encoding_out = encoding_out
-        assert (header_row is None) or len(header_row) == self.num_columns
+        if not ((header_row is None) or len(header_row) == self.num_columns):
+            raise AssertionError
         self.style = style
         self.outfile = outfile
         if header_row is not None:
@@ -291,7 +292,8 @@ class TableStream(object):
         self.outfile.write(s)
 
     def write_row(self, row, last=False, colors=None):
-        assert len(row) == self.num_columns
+        if len(row) != self.num_columns:
+            raise AssertionError
         columns = []
         max_lines = 0
         for i in xrange(self.num_columns):
