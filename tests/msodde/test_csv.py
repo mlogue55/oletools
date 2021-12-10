@@ -79,32 +79,18 @@ class TestCSV(unittest.TestCase):
         """ helper for test_texts: save text to file, run through msodde """
         filename = None
         handle = 0
-        try:
-            handle, filename = mkstemp(prefix='oletools-test-csv-', text=True)
-            os.write(handle, sample_text.encode('ascii'))
-            os.close(handle)
-            handle = 0
-            args = [filename, ]
-            if self.DO_DEBUG:
-                args += ['-l', 'debug']
+        handle, filename = mkstemp(prefix='oletools-test-csv-', text=True)
+        os.write(handle, sample_text.encode('ascii'))
+        os.close(handle)
+        handle = 0
+        args = [filename, ]
+        if self.DO_DEBUG:
+            args += ['-l', 'debug']
 
-            processed_args = msodde.process_args(args)
+        processed_args = msodde.process_args(args)
 
-            return msodde.process_file(
-                processed_args.filepath, processed_args.field_filter_mode)
-
-        except Exception:
-            raise
-        finally:
-            if handle:
-                os.close(handle)
-                handle = 0   # just in case
-            if filename:
-                if self.DO_DEBUG:
-                    print('keeping for debug purposes: {0}'.format(filename))
-                else:
-                    os.remove(filename)
-                filename = None   # just in case
+        return msodde.process_file(
+            processed_args.filepath, processed_args.field_filter_mode)
 
     @staticmethod
     def get_dde_from_output(output):

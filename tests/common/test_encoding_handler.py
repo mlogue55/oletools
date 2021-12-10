@@ -18,27 +18,17 @@ def temp_file(just_name=True):
     tmp_descriptor = None
     tmp_name = None
     tmp_handle = None
-    try:
-        tmp_descriptor, tmp_name = mkstemp()
+    tmp_descriptor, tmp_name = mkstemp()
 
-        # we create our own file handle since we want to be able to close the
-        # file and open it again for reading.
-        # We keep the os-level descriptor open so file name is still reserved
-        # for us
-        if just_name:
-            yield tmp_name
-        else:
-            tmp_handle = open(tmp_name, 'wb')
-            yield tmp_handle, tmp_name
-    except Exception:
-        raise
-    finally:
-        if tmp_descriptor is not None:
-            os.close(tmp_descriptor)
-        if tmp_handle is not None:
-            tmp_handle.close()
-        if tmp_name is not None and isfile(tmp_name):
-            os.unlink(tmp_name)
+    # we create our own file handle since we want to be able to close the
+    # file and open it again for reading.
+    # We keep the os-level descriptor open so file name is still reserved
+    # for us
+    if just_name:
+        yield tmp_name
+    else:
+        tmp_handle = open(tmp_name, 'wb')
+        yield tmp_handle, tmp_name
 
 
 class TestEncodingHandler(unittest.TestCase):
