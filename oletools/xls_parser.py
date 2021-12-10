@@ -476,16 +476,10 @@ class XlsbBeginSupBook(XlsbRecord):
 def parse_xlsb_part(file_stream, _, filename):
     """ Excel xlsb files also have bin files with record structure. iter! """
     xlsb_stream = None
-    try:
-        xlsb_stream = XlsbStream(file_stream, file_stream.size, filename,
-                                 record_base.STGTY_STREAM)
-        for record in xlsb_stream.iter_records():
-            yield record
-    except Exception:
-        raise
-    finally:
-        if xlsb_stream is not None:
-            xlsb_stream.close()
+    xlsb_stream = XlsbStream(file_stream, file_stream.size, filename,
+                             record_base.STGTY_STREAM)
+    for record in xlsb_stream.iter_records():
+        yield record
 
 
 ###############################################################################
