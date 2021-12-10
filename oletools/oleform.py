@@ -186,7 +186,8 @@ class ExtendedStream(object):
         return self
 
     def __enter__(self):
-        assert(self._next_jump)
+        if not (self._next_jump):
+            raise AssertionError
         self._jumps.append(self._next_jump)
         self._next_jump = None
 

@@ -563,9 +563,11 @@ class XmlParser(object):
                             inside_tags.append((elem.tag, depth))
                         depth += 1
                         continue
-                    assert(event == 'end')
+                    if (event != 'end'):
+                        raise AssertionError
                     depth -= 1
-                    assert(depth >= 0)
+                    if (depth < 0):
+                        raise AssertionError
 
                     is_wanted = elem.tag in want_tags
                     if is_wanted:
@@ -608,7 +610,8 @@ class XmlParser(object):
                 log('  xml-parsing for {0} failed ({1}). '
                     .format(subfile, err) +
                     'Run iter_non_xml to investigate.')
-            assert(depth == 0)
+            if (depth != 0):
+                raise AssertionError
 
     def get_content_types(self):
         """ retrieve subfile infos from [Content_Types].xml subfile

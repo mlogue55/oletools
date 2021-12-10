@@ -181,7 +181,8 @@ def show_header(ole, extra_data=False):
             ole.fp.seek(offset_extra_data)
             # read until end of file:
             exdata = ole.fp.read()
-            assert len(exdata) == extra_data_size
+            if len(exdata) != extra_data_size:
+                raise AssertionError
             print(hexdump3(exdata, length=16, startindex=offset_extra_data))
         print('')
 

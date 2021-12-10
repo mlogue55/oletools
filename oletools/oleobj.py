@@ -187,11 +187,13 @@ OOXML_RELATIONSHIP_TAG = '{http://schemas.openxmlformats.org/package/2006/relati
 
 # struct to parse an unsigned integer of 32 bits:
 STRUCT_UINT32 = struct.Struct('<L')
-assert STRUCT_UINT32.size == 4  # make sure it matches 4 bytes
+if STRUCT_UINT32.size != 4:
+    raise AssertionError
 
 # struct to parse an unsigned integer of 16 bits:
 STRUCT_UINT16 = struct.Struct('<H')
-assert STRUCT_UINT16.size == 2  # make sure it matches 2 bytes
+if STRUCT_UINT16.size != 2:
+    raise AssertionError
 
 # max length of a zero-terminated ansi string. Not sure what this really is
 STR_MAX_LEN = 1024
@@ -287,7 +289,8 @@ def read_length_prefixed_string(data, index):
         index += length
     # TODO: only in strict mode:
     # check the presence of the null char:
-    assert null_char == NULL_CHAR
+    if null_char != NULL_CHAR:
+        raise AssertionError
     return (ansi_string, index)
 
 
@@ -472,7 +475,8 @@ class OleObject(object):
         self.format_id, index = read_uint32(data, index)
         log.debug('OLE version=%08X - Format ID=%08X',
                   self.ole_version, self.format_id)
-        assert self.format_id in (self.TYPE_EMBEDDED, self.TYPE_LINKED)
+        if self.format_id not in (self.TYPE_EMBEDDED, self.TYPE_LINKED):
+            raise AssertionError
         self.class_name, index = read_length_prefixed_string(data, index)
         self.topic_name, index = read_length_prefixed_string(data, index)
         self.item_name, index = read_length_prefixed_string(data, index)
@@ -486,7 +490,8 @@ class OleObject(object):
                       self.data_size, len(data)-index)
             # TODO: handle incorrect size to avoid exception
             self.data = data[index:index+self.data_size]
-            assert len(self.data) == self.data_size
+            if len(self.data) != self.data_size:
+                raise AssertionError
             self.extra_data = data[index+self.data_size:]
 
 
