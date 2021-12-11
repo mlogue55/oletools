@@ -2,8 +2,7 @@
 """
 oledir.py
 
-oledir parses OLE files to display technical information about their directory
-entries, including deleted/orphan streams/storages and unused entries.
+
 
 Author: Philippe Lagadec - http://www.decalage.info
 License: BSD, see source code or documentation
